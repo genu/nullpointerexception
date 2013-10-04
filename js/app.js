@@ -11,8 +11,43 @@ $.fn.toggleClick = function(){
 };
 
 $(document).ready(function(){
+	var timer_active = false;
+
+	var timer_update = function() {
+		if(timer_active == false)
+			return;
+
+		var timer = $('.dash-time');
+
+		var time_parse = Date.parse(timer.html()).addSeconds(1);
+
+		timer.html(time_parse.toString("hh:mm:ss"));
+		setTimeout(timer_update, 1000);
+
+		
+	}
+	$('.starter').toggleClick(
+		function() {
+			var now = new Date().toString("HH:mm");
+			if($('#start').val() == "")
+				$('#start').val(now);
+
+			timer_active = true;
+
+			$(this).html('Pause');
+			//Update
+			setTimeout(timer_update, 1000);
+		},
+		function() {
+			$(this).html('Start');
+			timer_active = false;
+		}
+	)
 	// Show loging screen if necessary
-	$('#myModal').modal('show');
+	if(!$.jStorage.get('auth')) {
+			$('#myModal').modal('show');
+
+	}
 
 	// Dashboard actions
 	$('#ribbon-today').toggleClick(

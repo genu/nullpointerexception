@@ -15,8 +15,13 @@
 	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.calbox.min.js"></script>
 	<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.datebox.min.js"></script>
 
+	<!-- Jquery Storage Plugin -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+	<script src="js/jstorage.js"></script>
+
 
 	<script src="js/classie.js"></script>
+	<script src="js/date.js"></script>
 	<!--<script src="js/angular.js"></script>-->
 	<script src="js/app.js"></script>
 	<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
@@ -33,18 +38,13 @@
 
 </head>
 <body class="cbp-spmenu-push">
-	<div data-role="page" id="login">
-	<div data-role="panel" id="mypanel">
-        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="" style="background:#f37e30;">
+<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1" style="background:#f37e30;">
 			<h3>Menu</h3>
 			<a href="index.html">Home</a>
 			<a href="dashboard.html">Dashboard</a>
 			<a href="vacationforecast.html">Vacation Forecast</a>
 			<a href="egobooster.html">Ego Booster</a>
 		</nav>
-    </div><!-- /panel -->
-		
-
 		<div id="main" style="background-color:#34495E; padding-bottom:1000px;">
 			<nav class="navbar navbar-default" role="navigation" style="background-image:url('images/attheader_1680x68_iClock.png'); background-repeat: no-repeat; background-size:cover; border-bottom: solid; border-color: #ffffff; border-width: 1px; border-radius:0px;">
 				<ul class="nav navbar-nav">
@@ -58,10 +58,6 @@
 			<div class="modal fade" id="myModal">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			        <h4 class="modal-title">Log in</h4>
-			      </div>
 			      <div class="modal-body">
 				      <form class="login-form" id="login-form" action="#dashboard">
 					  <input type="text" id="login-username" placeholder="ATTUID" />
@@ -70,7 +66,7 @@
 					</form>
 			      </div>
 			      <div class="modal-footer">
-			        <button id="login-button" href="#dashboard" data-icon="check">Log In</button>
+			        <button id="login-button" href="#dashboard" data-dismiss="modal" data-icon="check">Log In</button>
 			      </div>
 			    </div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
@@ -88,8 +84,8 @@
 					</div>
 					<div class="col-xs-10 palette palette-pumpkin height-max">
 						<div style="width: 14em;margin-left: auto;margin-right: auto;">
-							<span class="dash-time">4:27:04</span>
-							<span class="dash-label">hours worked</span>
+							<span class="dash-time">0:00:00</span>
+							<span class="dash-label">time worked</span>
 						</div>
 					</div>	
 				</div>
@@ -105,17 +101,21 @@
 								</tr>
 								<tr>
 									<td>
-										 <input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="timeDateBox" />
+										 <input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="start" />
 										</td>
-									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="timeDateBox" /></td>
-									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="timeDateBox" /></td>
-									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="timeDateBox" /></td>
+									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="lunch-start" /></td>
+									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="lunch-end" /></td>
+									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="end" /></td>
 								</tr>
 							</table>
 						</div>				
 					</div>
 				</div>
-				<div class="row"><br/></div>
+				<div class="row">
+				<div class="col-xs-12" style="text-align: center;">
+					<a href="#" class="starter">Start</a>
+				</div>
+				<div class="col-xs-12"></div>
 				<div class="row height-21em">
 					<div class="col-xs-2 palette palette-carrot height-max" id="ribbon-week">
 						<div class="ribbon">
@@ -130,29 +130,29 @@
 									<th>Day</th>
 									<th>Time</th>
 								</tr>
-								<tr>
+								<tr class="day">
 									<td>Monday</td>
-									<td>7.2 Hours</td>
+									<td>---</td>
 								</tr>
-								<tr>
-									<td>Monday</td>
-									<td>7.2 Hours</td>
+								<tr class="day">
+									<td>Tuesday</td>
+									<td>---</td>
 								</tr>
-								<tr>
-									<td>Monday</td>
-									<td>7.2 Hours</td>
+								<tr class="day">
+									<td>Wednesday</td>
+									<td>---</td>
 								</tr>
-								<tr>
-									<td>Monday</td>
-									<td>7.2 Hours</td>
+								<tr class="day">
+									<td>Thursday</td>
+									<td>---</td>
 								</tr>
-								<tr>
-									<td>Monday</td>
-									<td>7.2 Hours</td>
+								<tr class="day">
+									<td>Friday</td>
+									<td>---</td>
 								</tr>
-								<tr>
+								<tr class="total">
 									<td align="right"><strong>Week Total</strong></td>
-									<td>40 hours</td>
+									<td>---</td>
 								</tr>
 							</table>
 						</div>
@@ -186,13 +186,13 @@
 				var login = new LoginObject();
 				login.save({username: $('#login-username').val(), password: $('#login-password').val()}, {
 					success: function(user) {
-						alert(x);
+						$.jStorage.set("auth", true);
 						// self.undelegateEvents();
 						delete self;
 					}
 				});
 			});
-			  
+
 		</script>
 	</div>
 </body>
