@@ -107,6 +107,9 @@
 									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="lunch-end" /></td>
 									<td><input name="timeDateBox" type="date" data-role="datebox" data-options='{"mode": "timeflipbox", "timeFormatOverride":12}' id="end" /></td>
 								</tr>
+								<tr>
+									<button id="save-button">Save</button>
+								</tr>
 							</table>
 						</div>				
 					</div>
@@ -173,12 +176,10 @@
 
 			}
 
-			//var username=prompt("Please enter your name","");
 			Parse.initialize("0KNVOKg5KNqqDZgXYfDTNd4ZQWvkoXd70HyWqYFF", "AZAjLdDa6B7vYjwKmOaPYFHt05yckFwXo0fAHN9C");
 			$('#login-button').click(function() {
 				var username = $('#login-username').val();
 				var pw = $('#login-password').val();
-				//alert(username);
 			    
 				x="Welcome, " + username + "!";
 				  
@@ -192,7 +193,27 @@
 					}
 				});
 			});
+			
+			$('#save-button').click(function() {
+				Parse.initialize("0KNVOKg5KNqqDZgXYfDTNd4ZQWvkoXd70HyWqYFF", "AZAjLdDa6B7vYjwKmOaPYFHt05yckFwXo0fAHN9C");
+				var start = $('#startDateBox').val();
+				var lunchstart = $('#lunchBeginDateBox').val();
+				var lunchend = $('#lunchEndDateBox').val();
+				var end = $('#endDateBox').val();
+				  
+				var DailyTimes = Parse.Object.extend("DailyTimes");
+				var dailyTimes = new DailyTimes();
+				dailyTimes.save({User: Parse.User.current(), StartTime: start, LunchStartTime: lunchstart, LunchEndTime: lunchend, EndTime: end}, {
+					success: function() {
+						alert(dailyTimes.id);
+						$(document).data("lastTimeObject", dailyTimes.id);
+						delete self;
+					}
+				});
+			});
 
+
+			  
 		</script>
 	</div>
 </body>
